@@ -1,0 +1,20 @@
+on:
+  repository_dispatch:
+    types: [deploy]
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check event data
+        run: |
+          echo "受信したイベントタイプ: ${{ github.event.action}}"
+          echo "環境: ${{ github.event.client_payload.environment }}"
+          echo "バージョン: ${{ github.event.client_payload.version }}"
+
+
+      - name: Deploy application
+        if: github.event.client_payload.environment == "production"
+        run: |
+          echo "本番環境にデプロイを実行します"

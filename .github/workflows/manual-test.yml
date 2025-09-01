@@ -1,0 +1,32 @@
+name: manual CI
+
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "実行環境を選択してください"
+        required: true
+        default: "development"
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      version:
+        description: "デプロイするバージョンを選択してください"
+        required: true
+        type: string
+
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: Deploy application
+        run: |
+          echo "選択された環境: ${{ github.event.inputs.environment }}"
+          echo "指定されたバージョン: ${{ github.event.inputs.version }}"
