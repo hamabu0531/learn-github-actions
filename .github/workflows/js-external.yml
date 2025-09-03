@@ -1,3 +1,6 @@
+name: External Trigger CI
+
+
 on:
   repository_dispatch:
     types: [deploy]

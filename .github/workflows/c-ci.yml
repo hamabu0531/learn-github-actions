@@ -4,6 +4,8 @@ name: C CI
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '* */1 * * *' # 1時間ごと
 
 
 jobs:
@@ -39,7 +41,7 @@ jobs:
 
       - name: Build with failure
         run: |
-          gcc -o mymath_test ./C/src/mymath_fail.c ./C/tests/test_mymath.c
+          gcc -Wall -Wextra -o mymath_test ./C/src/mymath_fail.c ./C/tests/test_mymath.c
 
       - name: Run tests
         run: |
