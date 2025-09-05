@@ -12,6 +12,7 @@ jobs:
   build:
     name: Build and Test
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,10 +23,12 @@ jobs:
           sudo apt-get install -y build-essential
 
       - name: Build
+        working-directory: ./C
         run: |
-          gcc -o mymath_test ./C/src/mymath.c ./C/tests/test_mymath.c
+          gcc -o mymath_test ./src/mymath.c ./tests/test_mymath.c
 
       - name: Run tests
+        working-directory: ./C
         run: |
           ./mymath_test
 
