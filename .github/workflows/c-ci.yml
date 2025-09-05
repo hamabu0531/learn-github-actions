@@ -29,23 +29,42 @@ jobs:
         run: |
           ./mymath_test
 
-  build-fail:
-    name: Build and Test with Failure
-    runs-on: ubuntu-latest
+  # テストが通らないケース
+  # build-fail:
+  #   name: Build and Test with Failure
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+
+  #     - name: Install dependencies
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y build-essential
+
+  #     - name: Build with failure
+  #       run: |
+  #         gcc -Wall -Wextra -o mymath_test ./C/src/mymath_fail.c ./C/tests/test_mymath.c
+
+  #     - name: Run tests
+  #       run: |
+  #         ./mymath_test
+
+
+  report-success:
     needs: build
+    runs-on: ubuntu-latest
+    if: success()
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Send Success Notification
+        run: echo 'Build and tests succeeded!'
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential
 
-      - name: Build with failure
-        run: |
-          gcc -Wall -Wextra -o mymath_test ./C/src/mymath_fail.c ./C/tests/test_mymath.c
-
-      - name: Run tests
-        run: |
-          ./mymath_test
+  report-failure:
+    needs: build
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Send Failure Notification
+        run: echo 'Build and tests failed!'
