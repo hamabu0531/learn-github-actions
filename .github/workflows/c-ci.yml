@@ -29,8 +29,7 @@ jobs:
 
       - name: Display Repository Info
         run: |
-          echo "Repository Owner: ${{ steps.repo-info.outputs.owner}}"
-          echo "Repository Name: ${{ steps.repo-info.outputs.name}}"
+          echo "Repository Owner: ${{ steps.repo-info.outputs.result }}"
 
       - name: Install dependencies
         run: |
