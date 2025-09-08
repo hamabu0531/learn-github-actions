@@ -77,7 +77,7 @@ jobs:
     steps:
       - name: Set Comment
         id: set-comment
-        run: echo "comment = Build and tests passed!" >> $GITHUB_OUTPUT
+        run: echo "comment=Build and tests passed!" >> $GITHUB_OUTPUT
 
       - name: Send Success Notification
         run: echo '${{ steps.set-comment.outputs.comment }}' # steps.<step-id>.outputs.<parameter-name>
