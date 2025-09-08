@@ -37,10 +37,15 @@ jobs:
           sudo apt-get install -y build-essential
 
       - name: Step that may fail
+        id: process
         continue-on-error: true
         run: |
           echo "Attempting risky operation..."
           exit 1
+
+      - name: Display Warning
+        if: steps.process.outcome == 'failure' && steps.process.conclusion == 'success'
+        run: echo "::warning::Process completed with warnings."
 
       - name: Build
         working-directory: ./C
