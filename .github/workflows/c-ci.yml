@@ -101,3 +101,11 @@ jobs:
     steps:
       - name: Send Failure Notification
         run: echo 'Build and tests failed!'
+
+  report-always:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Send Always Notification
+        run: echo 'This runs anytime.'
