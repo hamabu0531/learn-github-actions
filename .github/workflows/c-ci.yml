@@ -13,6 +13,8 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      SAMPLE: ${{ secrets.SAMPLE_SECRET_VALUE}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -30,6 +32,14 @@ jobs:
       - name: Display Repository Info
         run: |
           echo "Repository Owner: ${{ steps.repo-info.outputs.result }}"
+
+      - name: Verify Sample Secret Value
+        run: |
+          echo "Sample Secret Value: $SAMPLE"
+          if [ -z "$SAMPLE" ]; then
+            echo "Error: SAMPLE_SECRET_VALUE is not set in secrets."
+            exit 1
+          fi
 
       - name: Install dependencies
         run: |
@@ -84,11 +94,13 @@ jobs:
   report-success:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      SUCCESS_MESSAGE: "comment=Build and tests passed!"
     if: success()
     steps:
       - name: Set Comment
         id: set-comment
-        run: echo "comment=Build and tests passed!" >> $GITHUB_OUTPUT
+        run: echo "$SUCCESS_MESSAGE" >> $GITHUB_OUTPUT
 
       - name: Send Success Notification
         run: echo '${{ steps.set-comment.outputs.comment }}' # steps.<step-id>.outputs.<parameter-name>
