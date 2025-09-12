@@ -80,6 +80,9 @@ jobs:
           name: test_file
           path: .  # 展開先のパス
 
+      - name: Make executable
+        run: chmod +x ./mymath_test
+
       - name: Run tests
         run: |
           ./mymath_test
