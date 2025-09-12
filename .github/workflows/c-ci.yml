@@ -62,8 +62,25 @@ jobs:
         run: |
           gcc -o mymath_test ./src/mymath.c ./tests/test_mymath.c
 
+      - name: Upload Data
+        uses: actions/upload-artifact@v3
+        with:
+          name: test_file
+          path: ./C/  # アップロードするファイルやディレクトリのパス
+
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Data
+        uses: actions/download-artifact@v3
+        with:
+          name: test_file
+          path: .  # 展開先のパス
+
       - name: Run tests
-        working-directory: ./C
         run: |
           ./mymath_test
 
@@ -92,7 +109,7 @@ jobs:
 
 
   report-success:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     env:
       SUCCESS_MESSAGE: "comment=Build and tests passed!"
@@ -107,7 +124,7 @@ jobs:
 
 
   report-failure:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     if: failure()
     steps:
@@ -115,7 +132,7 @@ jobs:
         run: echo 'Build and tests failed!'
 
   report-always:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     if: always()
     steps:
