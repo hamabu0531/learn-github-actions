@@ -120,7 +120,7 @@ jobs:
       - name: Send Success Notification
         run: echo '${{ steps.set-comment.outputs.comment }}' # steps.<step-id>.outputs.<parameter-name>
 
-      - name: Make a Slack Notification
+      - name: Send a Slack Notification
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -144,3 +144,11 @@ jobs:
     steps:
       - name: Send Always Notification
         run: echo 'This runs anyway.'
+
+      - name: Send a Slack Notification always
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,action,eventName
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_APP_WEBHOOK_URL }}
