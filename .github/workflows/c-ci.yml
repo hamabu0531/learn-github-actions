@@ -6,6 +6,17 @@ on:
     branches: [main]
    #schedule:
     # - cron: '* */1 * * *' # 1時間ごと
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "実行環境を選択してください"
+        required: true
+        default: "development"
+        type: choice
+        options:
+          - development
+          - staging
+          - production
 
 
 jobs:
